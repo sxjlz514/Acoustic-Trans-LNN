@@ -48,8 +48,8 @@ This repository provides the official implementation, physics-informed data gene
  └── models/
     ├── Trans-LNN_withSigma_ratio1.pth        # Proposed Evolved Complete Model (Used for Fig. 2)
     ├── Trans-LNN_withSigma_ratio0.8.pth      # Proposed Curriculum Intermediate State (Ratio = 0.8)
-    ├── TransLNN_withSigma_ratio0.pth         # Proposed Teacher-Forcing Initialization State
-    ├── Trans-LNN_withSigma_ratio0_fullstep_Start.pth # Full-step boundary initialization
+    ├── TransLNN_withSigma_ratio0.pth         # Ablated Baseline 1 Evolved Weight (Ratio = 0)
+    ├── Trans-LNN_withSigma_ratio0_fullstep_Start.pth # Ablated Baseline 1 Evolved Weight (Ratio = 0)
     ├── Trans_LNN_withoutSigma_ratio1.pth     # Ablated Baseline 1 Evolved Weight (Ratio = 1.0)
     ├── Trans_LNN_withoutSigma_ratio0.8.pth   # Ablated Baseline 1 Intermediate State
     ├── pureLNN_ratio1.pth                    # Ablated Baseline 2 Evolved Weight (Ratio = 1.0)
