@@ -20,32 +20,32 @@ This repository provides the official implementation, physics-informed data gene
 
 ## 📂 Repository Structure
 
-```text
-├── code/
-│   ├── adsr.py                               # Step 1: Acoustic transient segmentation operator
-│   ├── STLT.py                               # Step 2: Short-Time Laplace Transform manifold extraction
-│   ├── SingleStep_Trans_LNN.py               # Step 3: Proposed Phase I Training (Teacher Forcing)
-│   ├── FullStep_Trans_LNN.py                 # Step 4: Proposed Phase II Fine-Tuning (Autoregressive)
-│   ├── check_ratio_Trans_lNN.py              # Step 5: Curriculum ratio evaluation for Proposed model
-│   ├── Trans_LNN_Check.py                    # 🎯 Quick Start: 1x2 Publication-grade Fig.2 reproduction script
-│   │
-│   ├── SingleStep_Trans_LNN_WithoutSigma.py  # Ablation Baseline 1: Phase I without transient rates
-│   ├── FullStep_Trans_LNN_WithoutSigma.py     # Ablation Baseline 1: Phase II without transient rates
-│   ├── Trans_LNN_WithoutSigma_Check.py       # Evaluation & Boundary Check for Baseline 1
-│   │
-│   ├── Single_pure_LNN.py                    # Ablation Baseline 2: Phase I pure CfC without attention
-│   ├── FullStep_pure_LNN.py                  # Ablation Baseline 2: Phase II pure CfC without attention
-│   ├── pure_LNN_check.py                     # Evaluation & Boundary Check for Baseline 2
-│   └── super_Trans_LNN_Check.py              # Downstream: Zero-shot temporal halving (dt -> 0.5dt)
-│
-├── csv/
-│   └── 036-C_Attack.csv                      # Curated baseline fluid manifold table for 36-C pipe
-│
-├── wav/
-│   ├── 036-C.wav                             # Raw acoustic recording of the Flöjtlein 2' stop
-│   └── 036-C_Attack.wav                      # Isolated physical transient attack phase audio
-│
-└── models/
+ ```text
+ ├── code/
+ │   ├── adsr.py                               # Step 1: Acoustic transient segmentation operator
+ │   ├── STLT.py                               # Step 2: Short-Time Laplace Transform manifold extraction
+ │   ├── SingleStep_Trans_LNN.py               # Step 3: Proposed Phase I Training (Teacher Forcing)
+ │   ├── FullStep_Trans_LNN.py                 # Step 4: Proposed Phase II Fine-Tuning (Autoregressive)
+ │   ├── check_ratio_Trans_lNN.py              # Step 5: Curriculum ratio evaluation for Proposed model
+ │   ├── Trans_LNN_Check.py                    # 🎯 Quick Start: 1x2 Publication-grade Fig.2  reproduction script
+ │   │
+ │   ├── SingleStep_Trans_LNN_WithoutSigma.py  # Ablation Baseline 1: Phase I without transient rates
+ │   ├── FullStep_Trans_LNN_WithoutSigma.py     # Ablation Baseline 1: Phase II without transient rates
+ │   ├── Trans_LNN_WithoutSigma_Check.py       # Evaluation & Boundary Check for Baseline 1
+ │   │
+ │   ├── Single_pure_LNN.py                    # Ablation Baseline 2: Phase I pure CfC without attention
+ │   ├── FullStep_pure_LNN.py                  # Ablation Baseline 2: Phase II pure CfC without attention
+ │   ├── pure_LNN_check.py                     # Evaluation & Boundary Check for Baseline 2
+ │   └── super_Trans_LNN_Check.py              # Downstream: Zero-shot temporal halving (dt -> 0.5dt)
+ │
+ ├── csv/
+ │   └── 036-C_Attack.csv                      # Curated baseline fluid manifold table for 36-C pipe
+ │
+ ├── wav/
+ │   ├── 036-C.wav                             # Raw acoustic recording of the Flöjtlein 2' stop
+ │   └── 036-C_Attack.wav                      # Isolated physical transient attack phase audio
+ │
+ └── models/
     ├── Trans-LNN_withSigma_ratio1.pth        # Proposed Evolved Complete Model (Used for Fig. 2)
     ├── Trans-LNN_withSigma_ratio0.8.pth      # Proposed Curriculum Intermediate State (Ratio = 0.8)
     ├── TransLNN_withSigma_ratio0.pth         # Proposed Teacher-Forcing Initialization State
@@ -55,7 +55,9 @@ This repository provides the official implementation, physics-informed data gene
     ├── pureLNN_ratio1.pth                    # Ablated Baseline 2 Evolved Weight (Ratio = 1.0)
     ├── pureLNN_ratio0.8.pth                  # Ablated Baseline 2 Intermediate State
     └── pureLNN_ratio0.pth                    # Ablated Baseline 2 Initial State
-### 🛠️ 1. Environment Setup & Requirements
+
+
+## 1. Environment Setup & Requirements
 
 ### Hardware Prerequisites
 *   **Minimum Memory**: 16 GB RAM (Required for multi-step adaptive step-size continuous integration).
@@ -68,7 +70,7 @@ Ensure all core scientific computing and Neural ODE dependencies are correctly i
 ```bash
 pip install torch>=2.0 numpy pandas scipy matplotlib librosa ncps
 
-### 🎯 2. Quick Start: Reproduce Publication Figures (Fig. 2)
+##  2. Quick Start: Reproduce Publication Figures (Fig. 2)
 
 To verify the core assertion of Intrinsic Separation and Residual Morphology without running the multi-stage training pipeline from scratch, we provide an all-in-one verification script.
 
@@ -78,7 +80,7 @@ Executing `code/Trans_LNN_Check.py` will automatically load the evolved pre-trai
 python code/Trans_LNN_Check.py
 Stochastic Noise Regime: Set DEFECT_MODE = 'noisy_baseline_coupled' to observe how the continuous-time solver symmetrically dampens and cancels severe high-frequency stochastic noise.
 Structural Defect Regime: Set DEFECT_MODE = 'air_leak' to observe the low-frequency directional drift triggered by permanent vector field alteration.
-### 🔄 3. Complete Training & Fine-Tuning Pipeline
+## 3. Complete Training & Fine-Tuning Pipeline
 To completely rebuild the continuous-time operator trajectory from scratch, execute the following execution sequences under strict order:
 
 **Step 1: Acoustic Signal Phase Slicing
@@ -120,7 +122,7 @@ Experiment 2: Super-Sampling Transcendence (Zero-Shot Scale Invariance)To prove 
 ```bash
 python code/super_Trans_LNN_Check.py
 
-###📉 5. Numerical Variance & Chaotic Dynamical DisclaimerDeterministic Synchronization:
+## 5. Numerical Variance & Chaotic Dynamical DisclaimerDeterministic Synchronization:
 All stochastic fields, random channel noise, and data batch samplers are strictly bound to seed = 514 inside the validation blocks to rigidly anchor the exact baseline statistics reported in the text (e.g., the 0.075 noise boundary limit).
 Hardware Compiler Drift: Because the Trans-LNN operates as a continuous-time neural ordinary differential equation (Neural ODE), its forward trajectory vector fields are highly sensitive to the microscopic accumulation of floating-point arithmetic. Switching between different execution backends (e.g., from an RTX 4090 to an NVIDIA A100 GPU) or changing compiler optimizations (CUDA/cuDNN micro-versions) may introduce minute deviations, slightly shifting the empirical critical boundary points within a narrow margin between 0.071 and 0.075.
 📌 Note: Crucially, the order of magnitude and the core intrinsic separation ratio (rigidly invariant at $\approx 5.4\times$) remain perfectly stable across all heterogeneous execution platforms. We highly appreciate your scholarly and engineering understanding of these inherent continuous-time non-linear dynamical traits.
