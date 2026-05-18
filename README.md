@@ -55,8 +55,7 @@ This repository provides the official implementation, physics-informed data gene
     ├── pureLNN_ratio1.pth                    # Ablated Baseline 2 Evolved Weight (Ratio = 1.0)
     ├── pureLNN_ratio0.8.pth                  # Ablated Baseline 2 Intermediate State
     └── pureLNN_ratio0.pth                    # Ablated Baseline 2 Initial State
-
-
+  ```
 ## 1. Environment Setup & Requirements
 
 ### Hardware Prerequisites
@@ -69,7 +68,7 @@ Ensure all core scientific computing and Neural ODE dependencies are correctly i
 
 ```bash
 pip install torch>=2.0 numpy pandas scipy matplotlib librosa ncps
-
+```
 ##  2. Quick Start: Reproduce Publication Figures (Fig. 2)
 
 To verify the core assertion of Intrinsic Separation and Residual Morphology without running the multi-stage training pipeline from scratch, we provide an all-in-one verification script.
@@ -78,30 +77,33 @@ Executing `code/Trans_LNN_Check.py` will automatically load the evolved pre-trai
 
 ```bash
 python code/Trans_LNN_Check.py
+```
 Stochastic Noise Regime: Set DEFECT_MODE = 'noisy_baseline_coupled' to observe how the continuous-time solver symmetrically dampens and cancels severe high-frequency stochastic noise.
 Structural Defect Regime: Set DEFECT_MODE = 'air_leak' to observe the low-frequency directional drift triggered by permanent vector field alteration.
 ## 3. Complete Training & Fine-Tuning Pipeline
 To completely rebuild the continuous-time operator trajectory from scratch, execute the following execution sequences under strict order:
 
-**Step 1: Acoustic Signal Phase Slicing
+**Step 1: Acoustic Signal Phase Slicing**
 
 Isolate the pure physical transient attack segment from raw audio streams (wav/036-C.wav):
 
-**Step 2: Complex Trajectory Coordinate Extraction**  
+**Step 2: Complex Trajectory Coordinate Extraction**
     Map the time-series segments into the continuous $s$-plane coordinates ($\sigma$, $M$ manifold tables) via Short-Time Laplace Transform to construct the baseline CSV tables:
-    ```bash
-    python code/STLT.py
-    
-**Step 3: Phase I - Teacher Forcing EmbeddingInitialize attention matrices and hidden embeddings under external ground-truth stabilization guidance:
 ```bash
-python code/SingleStep_Trans_LNN.py
+    python code/STLT.py
+```
+    
+**Step 3: Phase I - Teacher Forcing EmbeddingInitialize attention matrices and hidden** embeddings under external ground-truth stabilization guidance:
+```bash
+   python code/SingleStep_Trans_LNN.py
+```
 
 **Step 4: Phase II - Full Autoregressive Integration Fine-Tuning**  
     Close the recursive continuous feedback loop to minimize accumulated spectral curvature over the ultra-long 4000-frame integration horizon:
-    ```bash
+```bash
     python code/FullStep_Trans_LNN.py
-    
-**Step 5: Model Evaluation & RMSE VerificationValidate the model's convergence and tracking accuracy under different curriculum transition ratios (0.0, 0.8, 1.0):Bashpython code/check_ratio_Trans_lNN.py
+```    
+Step 5: Model Evaluation & RMSE VerificationValidate the model's convergence and tracking accuracy under different curriculum transition ratios (0.0, 0.8, 1.0):Bashpython code/check_ratio_Trans_lNN.py
 
 
 > 🚨 **Critical Note on Model Selection & Ablation Collapse**
@@ -118,11 +120,13 @@ To evaluate the ultimate sensitivity limits under the sub-noise regime, execute 
 python code/Trans_LNN_Check.py
 python code/Trans_LNN_WithoutSigma_Check.py
 python code/pure_LNN_check.py
+```
 Experiment 2: Super-Sampling Transcendence (Zero-Shot Scale Invariance)To prove that the critical bifurcation boundary represents an inherent geometric property of the continuous topological manifold rather than a discrete numerical artifact, run the temporal halving simulation ($dt \to 0.5dt$). It demonstrates that the intrinsic separation ratio remains rigidly invariant ($\approx 5.4\times$):
 ```bash
 python code/super_Trans_LNN_Check.py
+```
 
 ## 5. Numerical Variance & Chaotic Dynamical DisclaimerDeterministic Synchronization:
-All stochastic fields, random channel noise, and data batch samplers are strictly bound to seed = 514 inside the validation blocks to rigidly anchor the exact baseline statistics reported in the text (e.g., the 0.075 noise boundary limit).
-Hardware Compiler Drift: Because the Trans-LNN operates as a continuous-time neural ordinary differential equation (Neural ODE), its forward trajectory vector fields are highly sensitive to the microscopic accumulation of floating-point arithmetic. Switching between different execution backends (e.g., from an RTX 4090 to an NVIDIA A100 GPU) or changing compiler optimizations (CUDA/cuDNN micro-versions) may introduce minute deviations, slightly shifting the empirical critical boundary points within a narrow margin between 0.071 and 0.075.
-📌 Note: Crucially, the order of magnitude and the core intrinsic separation ratio (rigidly invariant at $\approx 5.4\times$) remain perfectly stable across all heterogeneous execution platforms. We highly appreciate your scholarly and engineering understanding of these inherent continuous-time non-linear dynamical traits.
+### All stochastic fields, random channel noise, and data batch samplers are strictly bound to seed = 514 inside the validation blocks to rigidly anchor the exact baseline statistics reported in the text (e.g., the 0.075 noise boundary limit).
+### Hardware Compiler Drift: Because the Trans-LNN operates as a continuous-time neural ordinary differential equation (Neural ODE), its forward trajectory vector fields are highly sensitive to the microscopic accumulation of floating-point arithmetic. Switching between different execution backends (e.g., from an RTX 4090 to an NVIDIA A100 GPU) or changing compiler optimizations (CUDA/cuDNN micro-versions) may introduce minute deviations, slightly shifting the empirical critical boundary points within a narrow margin between 0.071 and 0.075.
+### 📌 Note: Crucially, the order of magnitude and the core intrinsic separation ratio (rigidly invariant at $\approx 5.4\times$) remain perfectly stable across all heterogeneous execution platforms. We highly appreciate your scholarly and engineering understanding of these inherent continuous-time non-linear dynamical traits.
