@@ -65,7 +65,7 @@ This repository provides the official implementation, physics-informed data gene
 
 ### Dependency Installation
 Ensure all core scientific computing and Neural ODE dependencies are correctly installed before execution:
-
+When using .py files, please modify the file path (to your own path).
 ```bash
 pip install torch>=2.0 numpy pandas scipy matplotlib librosa ncps
 ```
@@ -86,7 +86,9 @@ To completely rebuild the continuous-time operator trajectory from scratch, exec
 **Step 1: Acoustic Signal Phase Slicing**
 
 Isolate the pure physical transient attack segment from raw audio streams (wav/036-C.wav):
+```bash
 python code/adsr.py
+```
 
 **Step 2: Complex Trajectory Coordinate Extraction**
     Map the time-series segments into the continuous $s$-plane coordinates ($\sigma$, $M$ manifold tables) via Short-Time Laplace Transform to construct the baseline CSV tables:
